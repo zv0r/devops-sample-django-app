@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13-bookworm
+    restart: always
+    environment:
+      POSTGRES_USER: ${DJANGO_DB_USER}
+      POSTGRES_PASSWORD: ${DJANGO_DB_PASS}
+      POSTGRES_DB: ${DJANGO_DB_NAME}
+      TZ: Europe/Moscow
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "db", "-p", "5432", "-d", "${DJANGO_DB_NAME}", "-U", "${DJANGO_DB_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgsql:/var/lib/postgresql/data
+    networks:
+      - parrot_net
+
+  parrot_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_DB_HOST: ${DJANGO_DB_HOST}
+      DJANGO_DB_NAME: ${DJANGO_DB_NAME}
+      DJANGO_DB_USER: ${DJANGO_DB_USER}
+      DJANGO_DB_PASS: ${DJANGO_DB_PASS}
+      DJANGO_DB_PORT: ${DJANGO_DB_PORT}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      TZ: Europe/Moscow
+    volumes:
+      - imgs:/app/media
+    networks:
+      - parrot_net
+
+volumes:
+  pgsql:
+  imgs:
+
+networks:
+  parrot_net:
+    driver: bridge
