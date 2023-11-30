@@ -12,10 +12,9 @@ Sample Python application on Django with PostgreSQL database.
 ____
 
 
-- django 4.0.1
-- Pillow 9.0.0
-- psycopg2-binary 2.9.3
-- django-prometheus 2.2.0
+- git
+- docker
+- docker compose
 
 <h3>Deployment</h3>
 
@@ -23,29 +22,11 @@ ____
 
 
 
-- install Python 3.8
-- install libs 
+- clone this repo
+- run docker compose
 ```shell
-      pip3 install -r requirements.txt
+      docker-compose up
 ```
-
-* Set environment export for variables:
-```yaml
-      DJANGO_DB_HOST: db
-      DJANGO_DB_NAME: app
-      DJANGO_DB_USER: worker
-      DJANGO_DB_PASS: worker
-      DJANGO_DB_PORT: "5432"
-      DJANGO_DEBUG: "False"
-```
+- you are awesome!
 
 
-* migrate database:
-```shell
-python3 manage.py migrate
-```
-
-* start application:
-```shell
-python3 manage.py runserver 0.0.0.0:8000
-```
