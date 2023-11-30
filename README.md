@@ -27,6 +27,7 @@ ____
 ```shell
       docker-compose up
 ```
+- open <http://localhost:8000> in your web browser
 - you are awesome!
 
 
